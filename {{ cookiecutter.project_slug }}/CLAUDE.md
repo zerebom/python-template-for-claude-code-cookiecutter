@@ -22,48 +22,53 @@ updated_at: 2025-06-26
 - **パフォーマンス**: pytest-benchmark (自動ベンチマーク)
 - **自動化**: pre-commit, GitHub Actions
 
-## プロジェクト全体の構造(デフォルト。必要に応じて更新してください)
+## プロジェクト全体の構造
 
 ```
 project-root/
-├── .github/                     # GitHub Actionsの設定ファイル
-│   ├── workflows/               # CI/CD + ベンチマークワークフロー
-│   │   ├── ci.yml               # メインCI（テスト・リント・型チェック）
-│   │   └── benchmark.yml        # パフォーマンスベンチマーク
-│   ├── dependabot.yml           # Dependabotの設定
+{%- if cookiecutter.use_github_actions %}
+├── .github/                     # GitHub Actions設定
+│   ├── workflows/ci.yml         # CI/CD workflow
+{%- if cookiecutter.use_dependabot %}
+│   ├── dependabot.yml           # Dependabot設定
+{%- endif %}
 │   ├── ISSUE_TEMPLATE/          # Issueテンプレート
 │   └── PULL_REQUEST_TEMPLATE.md # Pull Requestテンプレート
-├── template/                    # **重要**: Claude Codeのベストプラクティス・モデルコード
-│   ├── src/
-│   │   └── template_package/    # モデルパッケージの完全な実装例
-│   │       ├── __init__.py      # パッケージエクスポートの例
-│   │       ├── py.typed         # 型情報マーカーの例
-│   │       ├── types.py         # 型定義のベストプラクティス
-│   │       ├── core/
-│   │       │   └── example.py   # クラス・関数実装の模範例
-│   │       └── utils/
-│   │           ├── helpers.py   # ユーティリティ関数の実装例
-│   │           ├── logging_config.py # ロギング設定の実装例
-│   │           └── profiling.py # パフォーマンス測定の実装例
-│   └── tests/                   # テストコードの完全な実装例
-│       ├── unit/                # 単体テスト
-│       ├── property/            # プロパティベーステスト
-│       ├── integration/         # 結合テスト
-│       └── conftest.py          # pytestフィクスチャ
-├── src/                         # 実際の開発用ディレクトリ
-│       └── project_name/    # モデルパッケージの完全な実装例
-│           └── （プロジェクト固有のパッケージを配置）
-├── tests/                       # 実際のテスト用ディレクトリ
+{%- endif %}
+├── src/{{ cookiecutter.package_name }}/  # メインパッケージ
+│   ├── __init__.py              # パッケージエクスポート
+│   ├── py.typed                 # 型情報マーカー
+│   ├── types.py                 # 型定義
+│   ├── core/                    # コアビジネスロジック
+│   │   ├── __init__.py
+│   │   └── example.py
+│   └── utils/                   # ユーティリティ
+│       ├── __init__.py
+│       ├── helpers.py
+{%- if cookiecutter.use_logging %}
+│       ├── logging_config.py    # ロギング設定
+{%- endif %}
+{%- if cookiecutter.use_profiling %}
+│       └── profiling.py         # パフォーマンス測定
+{%- endif %}
+├── tests/                       # テストディレクトリ
 │   ├── unit/                    # 単体テスト
+{%- if cookiecutter.use_hypothesis %}
 │   ├── property/                # プロパティベーステスト
+{%- endif %}
 │   ├── integration/             # 統合テスト
-│   └── conftest.py              # pytest設定
+│   ├── conftest.py              # pytest設定
+│   └── test_dummy.py            # 基本的なインポートテスト
 ├── docs/                        # ドキュメント
+│   └── development-patterns.md  # 開発パターンガイド
 ├── scripts/                     # ユーティリティスクリプト
-├── pyproject.toml               # uv/ruff/mypyの設定ファイル
-├── .gitignore                   # バージョン管理除外ファイル
-├── .pre-commit-config.yaml      # pre-commitの設定ファイル
-├── README.md                    # 人間向けのプロジェクトの説明
+├── pyproject.toml               # プロジェクト設定
+{%- if cookiecutter.use_pre_commit %}
+├── .pre-commit-config.yaml      # pre-commit設定
+{%- endif %}
+├── .gitignore                   # バージョン管理除外設定
+├── Makefile                     # 開発コマンド
+├── README.md                    # プロジェクト説明
 └── CLAUDE.md                    # このファイル
 ```
 
@@ -228,30 +233,37 @@ project-root/
 - 警告時: 確認後続行またはスキップ
 - 並列実行: セキュリティスキャン & 品質チェック & パフォーマンステスト
 
-## `template/`ディレクトリにあるモデルケースの参照
+## 開発パターンとベストプラクティスの参照
 
-`template/` ディレクトリには、Python開発のベストプラクティスを示すモデルコードが含まれています。実装時の参考として積極的に活用してください。
+このプロジェクトには、Python開発のベストプラクティスを示すドキュメントとコード例が含まれています。実装時の参考として積極的に活用してください。
 
-### モデルコード参照の推奨場面
+### 参考リソース
 
-1. **新しいクラスや関数を実装する際**
-   - @template/src/project_name/core/example.py で適切な型ヒント、docstring、エラーハンドリングを確認
-   - @template/src/project_name/types.py で型定義のパターンを確認
+1. **開発パターンドキュメント**
+   - @docs/development-patterns.md で推奨パターンとコード例を確認
+   - 型ヒント、エラーハンドリング、ロギングの実装例
 
-2. **ユーティリティ関数を作成する際**
-   - @template/src/project_name/utils/helpers.py で関数の構造、エラー処理、ロギングを確認
+2. **実装例の確認**
+   - @src/{{ cookiecutter.package_name }}/core/example.py で適切な型ヒント、docstring、エラーハンドリングを確認
+   - @src/{{ cookiecutter.package_name }}/types.py で型定義のパターンを確認
 
-3. **テストを書く際**
-   - @template/tests/unit/ で単体テストの書き方を確認
-   - @template/tests/property/ でプロパティベーステストの例を確認
-   - @template/tests/conftest.py でフィクスチャの実装例を確認
+3. **ユーティリティ実装**
+   - @src/{{ cookiecutter.package_name }}/utils/helpers.py で関数の構造、エラー処理を確認
+{%- if cookiecutter.use_logging %}
+   - @src/{{ cookiecutter.package_name }}/utils/logging_config.py でロギング設定例を確認
+{%- endif %}
+{%- if cookiecutter.use_profiling %}
+   - @src/{{ cookiecutter.package_name }}/utils/profiling.py でパフォーマンス測定例を確認
+{%- endif %}
 
-4. **ロギングを実装する際**
-   - @template/src/project_name/utils/logging_config.py で設定例を確認
-   - 各モジュールでのロガー使用例を確認
+4. **テスト実装例**
+   - @tests/unit/ で単体テストの書き方を確認
+{%- if cookiecutter.use_hypothesis %}
+   - @tests/property/ でプロパティベーステストの例を確認
+{%- endif %}
+   - @tests/conftest.py でフィクスチャの実装例を確認
 
-新しいコードを書く際は、まず`template/`内の類似例を確認し、パターンを踏襲し、プロジェクト固有の要件に合わせて調整してください。
-`template/`は削除せず、常に参照可能な状態を維持します。
+新しいコードを書く際は、まず既存のコードとドキュメントでパターンを確認し、一貫性を保って実装してください。
 
 ## よく使うコマンド
 

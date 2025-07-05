@@ -40,46 +40,26 @@ def main():
     
     # Remove profiling utilities if not needed
     if not {{ cookiecutter.use_profiling }}:
-        # Remove from main source
         profiling_file = project_dir / "src" / "{{ cookiecutter.package_name }}" / "utils" / "profiling.py"
         if profiling_file.exists():
             remove_file(profiling_file)
-        
-        # Remove from template
-        template_profiling = project_dir / "template" / "src" / "{{ cookiecutter.package_name }}" / "utils" / "profiling.py"
-        if template_profiling.exists():
-            remove_file(template_profiling)
     
     # Remove logging utilities if not needed
     if not {{ cookiecutter.use_logging }}:
-        # Remove from main source
         logging_file = project_dir / "src" / "{{ cookiecutter.package_name }}" / "utils" / "logging_config.py"
         if logging_file.exists():
             remove_file(logging_file)
-        
-        # Remove from template
-        template_logging = project_dir / "template" / "src" / "{{ cookiecutter.package_name }}" / "utils" / "logging_config.py"
-        if template_logging.exists():
-            remove_file(template_logging)
     
     # Remove hypothesis tests if not needed
     if not {{ cookiecutter.use_hypothesis }}:
-        # Remove property-based test directories
         property_tests = project_dir / "tests" / "property"
         if property_tests.exists():
             remove_directory(property_tests)
-        
-        template_property = project_dir / "template" / "tests" / "property"
-        if template_property.exists():
-            remove_directory(template_property)
     
-    # Clean up empty directories
-    for utils_dir in [
-        project_dir / "src" / "{{ cookiecutter.package_name }}" / "utils",
-        project_dir / "template" / "src" / "{{ cookiecutter.package_name }}" / "utils"
-    ]:
-        if utils_dir.exists() and not any(utils_dir.glob("*.py")):
-            remove_directory(utils_dir)
+    # Clean up empty utils directory
+    utils_dir = project_dir / "src" / "{{ cookiecutter.package_name }}" / "utils"
+    if utils_dir.exists() and not any(utils_dir.glob("*.py")):
+        remove_directory(utils_dir)
     
     print("✅ Project generation completed!")
     print(f"📁 Project created at: {project_dir}")
