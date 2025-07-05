@@ -9,13 +9,11 @@ updated_at: 2025-06-26
 
 ## プロジェクト概要
 
-このプロジェクトは、Claude Codeでの開発に最適化されたPythonプロジェクトテンプレートです。
-厳格な型チェック、自動化されたコード品質管理、CIに加えて、GitHub CLIを使用したGitHub操作をサポートします。
-また、Claude Codeとの協働をサポートするためのドキュメントも提供します。
+{{ cookiecutter.project_short_description }}
 
 ## 技術スタック
 
-- **言語**: Python 3.12+
+- **言語**: Python {{ cookiecutter.python_version }}+
 - **主要ツール**: uv (パッケージ管理), Ruff (リント・フォーマット), mypy (型チェック), pytest (テスト)
 - **パッケージ管理**: uv
 - **リンター/フォーマッター**: ruff
