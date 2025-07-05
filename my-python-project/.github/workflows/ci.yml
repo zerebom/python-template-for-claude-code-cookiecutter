@@ -14,11 +14,11 @@ on:
 
 # 同じワークフローの同時実行を制御
 concurrency:
-  group: ${% raw %}{{ github.workflow }}{% endraw %}-${% raw %}{{ github.ref }}{% endraw %}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  PYTHON_VERSION: "{{ cookiecutter.python_version }}"
+  PYTHON_VERSION: "3.12"
   UV_CACHE_DIR: /tmp/.uv-cache
 
 jobs:
@@ -37,7 +37,7 @@ jobs:
         cache-dependency-glob: "uv.lock"
 
     - name: Set up Python
-      run: uv python pin ${% raw %}{{ env.PYTHON_VERSION }}{% endraw %}
+      run: uv python pin ${{ env.PYTHON_VERSION }}
 
     - name: Install dependencies
       run: uv sync --all-extras
@@ -63,7 +63,7 @@ jobs:
         cache-dependency-glob: "uv.lock"
 
     - name: Set up Python
-      run: uv python pin ${% raw %}{{ env.PYTHON_VERSION }}{% endraw %}
+      run: uv python pin ${{ env.PYTHON_VERSION }}
 
     - name: Install dependencies
       run: uv sync --all-extras
@@ -72,12 +72,12 @@ jobs:
       run: uv run mypy src/ --strict --show-error-codes --pretty
 
   test:
-    name: Test Python ${% raw %}{{ matrix.python-version }}{% endraw %} on ${% raw %}{{ matrix.os }}{% endraw %}
-    runs-on: ${% raw %}{{ matrix.os }}{% endraw %}
+    name: Test Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["{{ cookiecutter.python_version }}"]
+        python-version: ["3.12"]
         os: [ubuntu-latest]
 
     steps:
@@ -89,8 +89,8 @@ jobs:
         enable-cache: true
         cache-dependency-glob: "uv.lock"
 
-    - name: Set up Python ${% raw %}{{ matrix.python-version }}{% endraw %}
-      run: uv python pin ${% raw %}{{ matrix.python-version }}{% endraw %}
+    - name: Set up Python ${{ matrix.python-version }}
+      run: uv python pin ${{ matrix.python-version }}
 
     - name: Install dependencies
       run: uv sync --all-extras
@@ -98,7 +98,7 @@ jobs:
     - name: Run tests
       run: |
         uv run pytest tests/ \
-          --cov=src/{{ cookiecutter.package_name }} \
+          --cov=src/my_python_project \
           --cov-report=xml \
           --cov-report=term-missing \
           --cov-report=html \
@@ -109,7 +109,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: test-results-${% raw %}{{ matrix.os }}{% endraw %}-${% raw %}{{ matrix.python-version }}{% endraw %}
+        name: test-results-${{ matrix.os }}-${{ matrix.python-version }}
         path: test-results.xml
 
     # オプション: カバレッジレポートのアップロード
@@ -118,7 +118,7 @@ jobs:
     #   with:
     #     file: ./coverage.xml
     #     flags: unittests
-    #     name: ${% raw %}{{ matrix.os }}{% endraw %}-${% raw %}{{ matrix.python-version }}{% endraw %}
+    #     name: ${{ matrix.os }}-${{ matrix.python-version }}
     #     fail_ci_if_error: false  # カバレッジサービスの問題でCIを失敗させない
 
   # オプション: パッケージのビルド
@@ -159,7 +159,7 @@ jobs:
   #       enable-cache: true
 
   #   - name: Set up Python
-  #     run: uv python pin ${% raw %}{{ env.PYTHON_VERSION }}{% endraw %}
+  #     run: uv python pin ${{ env.PYTHON_VERSION }}
 
   #   - name: Install dependencies
   #     run: |
@@ -192,4 +192,4 @@ jobs:
       - name: Decide whether the all jobs succeeded
         uses: re-actors/alls-green@release/v1
         with:
-          jobs: ${% raw %}{{ toJSON(needs) }}{% endraw %}
+          jobs: ${{ toJSON(needs) }}
