@@ -219,6 +219,12 @@ setup_python() {
 
 # Setup pre-commit
 setup_precommit() {
+    # Check if pre-commit is enabled
+    if [ ! -f ".pre-commit-config.yaml" ]; then
+        print_step "Pre-commit is disabled, skipping setup..."
+        return 0
+    fi
+
     print_step "Setting up pre-commit hooks..."
 
     uv run pre-commit install
