@@ -19,7 +19,11 @@ help:
 	@echo "  audit        - 依存関係の脆弱性チェック（pip-audit）"
 	@echo "  benchmark    - パフォーマンスベンチマーク実行"
 	@echo "  check        - format, lint, typecheck, testを順番に実行"
-	@echo "  check-all    - pre-commitで全ファイルをチェック"
+	@if [ -f ".pre-commit-config.yaml" ]; then \
+		echo "  check-all    - pre-commitで全ファイルをチェック"; \
+	else \
+		echo "  check-all    - 全チェック（format + lint + typecheck + test）"; \
+	fi
 	@echo "  pr           - PR作成 (TITLE=\"タイトル\" BODY=\"本文またはファイルパス\" [LABEL=\"ラベル\"])"
 	@echo "  pr-list      - 開いているPRの一覧表示"
 	@echo "  issue        - イシュー作成 (TITLE=\"タイトル\" BODY=\"本文またはファイルパス\" [LABEL=\"ラベル\"])"
@@ -82,7 +86,12 @@ benchmark:
 check: format lint typecheck test
 
 check-all:
-	uv run pre-commit run --all-files
+	@if [ -f ".pre-commit-config.yaml" ]; then \
+		uv run pre-commit run --all-files; \
+	else \
+		echo "Pre-commit is disabled, running individual checks..."; \
+		$(MAKE) format lint typecheck test; \
+	fi
 
 # GitHub操作
 pr:
