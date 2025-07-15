@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 # Default values
 DEFAULT_PROJECT_NAME=$(basename "$(pwd)" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
-PYTHON_VERSION="3.12"
+PYTHON_VERSION="{{ cookiecutter.python_version }}"
 
 # Detect shell and set rc_file
 rc_file="~/.bashrc"
@@ -239,6 +239,12 @@ setup_precommit() {
 
 # Initialize git if needed
 init_git() {
+    # Check if git initialization is disabled
+    if [ "{{ cookiecutter.initialize_git }}" = "false" ]; then
+        print_step "Git initialization skipped (initialize_git=false)"
+        return 0
+    fi
+    
     if [ ! -d ".git" ]; then
         print_step "Initializing git repository..."
         git init
