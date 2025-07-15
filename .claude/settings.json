@@ -116,18 +116,5 @@
       "Bash(badblocks -w /dev/sda)",
       "Bash(badblocks -w /dev/sdb)"
     ]
-  },
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "play assets/和太鼓でドドン.mp3"
-          }
-        ]
-      }
-    ]
   }
 }
