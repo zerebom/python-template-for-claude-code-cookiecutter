@@ -29,9 +29,6 @@ project-root/
 {%- if cookiecutter.use_github_actions %}
 ├── .github/                     # GitHub Actions設定
 │   ├── workflows/ci.yml         # CI/CD workflow
-{%- if cookiecutter.use_dependabot %}
-│   ├── dependabot.yml           # Dependabot設定
-{%- endif %}
 │   ├── ISSUE_TEMPLATE/          # Issueテンプレート
 │   └── PULL_REQUEST_TEMPLATE.md # Pull Requestテンプレート
 {%- endif %}

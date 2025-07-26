@@ -1,0 +1,39 @@
+# Cookiecutter設定ファイル例
+# このファイルを ~/.cookiecutterrc としてホームディレクトリにコピーして使用してください
+
+default_context:
+    # 個人情報（必須：各自でカスタマイズしてください）
+    author_name: "Your Name"
+    author_email: "your.email@example.com"
+    github_username: "yourusername"
+    
+    # プロジェクト設定
+    python_version: "3.12"  # 推奨：最新安定版
+    version: "0.1.0"        # セマンティックバージョニング
+    license: "MIT"          # 最も一般的なオープンソースライセンス
+    
+    # 機能設定：開発効率を重視した推奨デフォルト
+    use_github_actions: true   # CI/CD は現代開発で必須
+    use_pre_commit: true       # コード品質維持に重要
+    use_mypy_strict: true      # 型安全性を重視
+    use_logging: true          # デバッグ・運用で必須
+    use_hypothesis: true       # プロパティベーステストで品質向上
+    initialize_git: true       # ほぼ全プロジェクトでGit使用
+    
+    # オプション機能：プロジェクトに応じて選択
+    use_benchmarks: false      # パフォーマンス重視の場合はtrue
+    use_profiling: false       # パフォーマンス調査が必要な場合はtrue
+
+# 短縮名：コマンドを簡潔にする
+abbreviations:
+    # メインテンプレート
+    pyclaude: gh:zerebom/python-template-for-claude-code-cookiecutter
+    
+    # 他の便利なテンプレート例
+    pypackage: gh:audreyr/cookiecutter-pypackage
+    django: gh:cookiecutter/cookiecutter-django
+    flask: gh:cookiecutter/cookiecutter-flask
+
+# Cookiecutter動作設定
+replay_dir: "~/.cookiecutter_replay"  # 過去の設定を保存
+output_dir: "~/projects"              # デフォルト出力先
