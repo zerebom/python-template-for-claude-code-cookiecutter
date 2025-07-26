@@ -23,7 +23,7 @@ def main():
     project_dir = Path.cwd()
 
     # Remove .git directory if git initialization is disabled
-    if "{{ cookiecutter.initialize_git }}".lower() == "false":
+    if not {{cookiecutter.initialize_git}}:
         git_dir = project_dir / ".git"
         if git_dir.exists():
             remove_directory(git_dir)

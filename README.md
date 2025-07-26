@@ -69,7 +69,7 @@ if not {{cookiecutter.use_logging}}:
 
 ```bash
 # デフォルト値で自動生成（CI/CD向け）
-cookiecutter gh:zerebom/python-template-for-calaude-code-cookicutter --no-input
+cookiecutter gh:zerebom/python-template-for-claude-code-cookiecutter --no-input
 
 # 出力先指定
 cookiecutter . --output-dir ~/projects/
@@ -91,7 +91,7 @@ pipx install cookiecutter
 ### 2. テンプレートからプロジェクト生成
 
 ```bash
-cookiecutter https://github.com/zerebom/python-template-for-calaude-code-cookicutter
+cookiecutter https://github.com/zerebom/python-template-for-claude-code-cookiecutter
 ```
 
 ### 3. インタラクティブな設定
