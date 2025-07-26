@@ -13,11 +13,8 @@
     "use_mypy_strict": true,
     "use_hypothesis": true,
     "use_benchmarks": true,
-    "use_dependabot": true,
-    "use_github_cli_integration": true,
     "use_logging": true,
     "use_profiling": true,
     "initialize_git": true,
-    "license": ["MIT", "BSD-3-Clause", "Apache-2.0", "GPL-3.0", "Private/No License"],
-    "open_source_license": "MIT"
+    "license": ["MIT", "BSD-3-Clause", "Apache-2.0", "GPL-3.0", "Private/No License"]
 }
