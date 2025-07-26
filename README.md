@@ -107,7 +107,7 @@ author_email [your.email@example.com]:
 github_username [yourusername]: 
 project_short_description [A short description of the project]: 
 version [0.1.0]: 
-python_version [3.12]: 
+python_version [3.13]: 
 use_github_actions [y]: 
 use_pre_commit [y]: 
 use_mypy_strict [y]: 
